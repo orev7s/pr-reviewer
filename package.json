@@ -1,0 +1,41 @@
+{
+  "name": "gemini-pr-reviewer-github-app",
+  "version": "2.0.0",
+  "description": "GitHub App for PR review using Gemini AI",
+  "main": "dist/polling-server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node start.js",
+    "start:polling": "node dist/polling-server.js",
+    "start:webhook": "node dist/webhook-server.js",
+    "dev": "ts-node src/polling-server.ts",
+    "dev:webhook": "ts-node src/webhook-server.ts",
+    "setup": "node setup.js",
+    "quick-start": "npm run setup && npm run build && npm start",
+    "health-check": "node scripts/health-check.js",
+    "prestart": "npm run health-check",
+    "lint": "echo 'Linting not configured yet' && exit 0"
+  },
+  "keywords": ["github", "github-app", "ai-review", "gemini", "pr-reviewer"],
+  "author": "Self-hosted PR Reviewer",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^20.0.2",
+    "@octokit/auth-app": "^6.0.1",
+    "@octokit/webhooks": "^12.0.4",
+    "axios": "^1.6.2",
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "crypto": "^1.0.1",
+    "node-cron": "^3.0.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/express": "^4.17.21",
+    "@types/node-cron": "^3.0.11",
+    "@types/jsonwebtoken": "^9.0.5",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
+  }
+}

@@ -1,0 +1,103 @@
+name: Bug Report
+description: Report a bug or issue with the Gemini PR Reviewer
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us resolve the issue.
+
+  - type: checkboxes
+    id: search
+    attributes:
+      label: Search existing issues
+      description: Please search existing issues before creating a new one
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe the issue you're experiencing...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear description of what you expected to happen
+      placeholder: What should have happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+      placeholder: What actually happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Information about your environment
+      placeholder: |
+        - OS: [e.g. Ubuntu 20.04, Windows 10, macOS 12.0]
+        - Node.js version: [e.g. 18.17.0]
+        - Package version: [e.g. 2.0.0]
+        - Deployment method: [e.g. Docker, PM2, manual]
+        - Operation mode: [e.g. polling, webhook]
+    validations:
+      required: true
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: Configuration
+      description: Relevant configuration details (remove sensitive information)
+      placeholder: |
+        Please share relevant parts of your configuration:
+        - GitHub App permissions
+        - Environment variables (REDACTED)
+        - Any custom settings
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant log output (remove sensitive information like tokens or private keys)
+      placeholder: Paste relevant log output here...
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here
+      placeholder: Screenshots, additional details, related issues, etc.
+    validations:
+      required: false

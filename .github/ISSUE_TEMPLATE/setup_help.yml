@@ -1,0 +1,136 @@
+name: Setup Help
+description: Get help with GitHub App setup and configuration
+title: "[Setup] "
+labels: ["question", "setup", "needs-help"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Need help setting up the Gemini PR Reviewer? We're here to help!
+        
+        **Before creating this issue, please:**
+        1. Check the [README.md](../../README.md) for basic setup instructions
+        2. Review the [GitHub App Setup Guide](../../GITHUB-APP-SETUP.md) for detailed steps
+        3. Look through existing issues for similar problems
+
+  - type: checkboxes
+    id: documentation
+    attributes:
+      label: Documentation Check
+      description: Have you reviewed the available documentation?
+      options:
+        - label: I have read the README.md
+          required: true
+        - label: I have reviewed the GITHUB-APP-SETUP.md guide
+          required: true
+        - label: I have searched existing issues
+          required: true
+
+  - type: dropdown
+    id: setup_stage
+    attributes:
+      label: Setup Stage
+      description: At which stage are you experiencing issues?
+      options:
+        - Creating the GitHub App
+        - Configuring environment variables
+        - Installing dependencies
+        - Running the application
+        - Installing the app on repositories
+        - Setting up webhooks
+        - Testing the integration
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: What's the issue?
+      description: Describe what you're trying to do and what's not working
+      placeholder: |
+        Please describe:
+        - What you're trying to accomplish
+        - What steps you've taken
+        - What error or unexpected behavior you're seeing
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Information
+      description: Tell us about your setup
+      placeholder: |
+        - Operating System: [e.g. Windows 10, Ubuntu 20.04, macOS 12.0]
+        - Node.js version: [e.g. 18.17.0]
+        - Installation method: [e.g. git clone, download zip]
+        - Deployment target: [e.g. local development, VPS, cloud service]
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps_taken
+    attributes:
+      label: Steps Already Taken
+      description: What have you already tried?
+      placeholder: |
+        List the steps you've already taken to resolve the issue:
+        - Followed README instructions
+        - Checked environment variables
+        - Reviewed logs
+        - etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: errors
+    attributes:
+      label: Error Messages
+      description: Any error messages you're seeing (remove sensitive information)
+      placeholder: Paste error messages or unexpected output here...
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: Configuration Details
+      description: Share relevant configuration (remove sensitive data like keys and secrets)
+      placeholder: |
+        Relevant parts of your configuration:
+        - GitHub App permissions
+        - Environment variable names (not values)
+        - Any custom settings
+        
+        ⚠️  DO NOT share actual API keys, tokens, or secrets!
+    validations:
+      required: false
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      description: How urgent is this for you?
+      options:
+        - Not urgent - learning/exploring
+        - Somewhat urgent - need for project
+        - Urgent - blocking development
+        - Very urgent - production issue
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Anything else that might help us assist you?
+      placeholder: |
+        - Screenshots of error messages
+        - Your specific use case
+        - Timeline constraints
+        - Any other relevant details
+    validations:
+      required: false

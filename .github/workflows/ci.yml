@@ -1,0 +1,171 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test and Build
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build TypeScript
+      run: npm run build
+      
+    - name: Check for TypeScript errors
+      run: npx tsc --noEmit
+      
+    - name: Run linting (if available)
+      run: npm run lint || echo "No linting configured"
+      continue-on-error: true
+      
+    - name: Check build artifacts
+      run: |
+        echo "Checking dist directory..."
+        ls -la dist/
+        echo "Verifying main entry points exist..."
+        test -f dist/polling-server.js
+        test -f dist/webhook-server.js
+        test -f dist/core-reviewer.js
+        
+    - name: Test configuration loading
+      run: |
+        echo "Testing configuration loading..."
+        node -e "
+          try {
+            require('./dist/config-manager.js');
+            console.log('✅ Config manager loads successfully');
+          } catch (error) {
+            console.error('❌ Config manager failed to load:', error.message);
+            process.exit(1);
+          }
+        "
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run security audit
+      run: npm audit --audit-level=moderate
+      
+    - name: Check for sensitive files
+      run: |
+        echo "Checking for sensitive files that shouldn't be in repository..."
+        # Check that no .env files are committed
+        if find . -name ".env" -not -path "./node_modules/*" | grep -q .; then
+          echo "❌ .env file found in repository!"
+          exit 1
+        fi
+        # Check that no private keys are committed
+        if find . -name "*.pem" -not -path "./node_modules/*" | grep -q .; then
+          echo "❌ Private key (.pem) file found in repository!"
+          exit 1
+        fi
+        echo "✅ No sensitive files found"
+
+  validate-app-manifest:
+    name: Validate GitHub App Manifest
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Validate manifest JSON
+      run: |
+        echo "Validating GitHub App manifest..."
+        if ! command -v jq &> /dev/null; then
+          sudo apt-get update && sudo apt-get install -y jq
+        fi
+        
+        # Validate JSON syntax
+        if ! jq empty github-app-manifest.json; then
+          echo "❌ github-app-manifest.json is not valid JSON"
+          exit 1
+        fi
+        
+        # Check required fields
+        required_fields=("name" "url" "hook_attributes" "default_events" "default_permissions")
+        for field in "${required_fields[@]}"; do
+          if ! jq -e ".$field" github-app-manifest.json > /dev/null; then
+            echo "❌ Missing required field: $field"
+            exit 1
+          fi
+        done
+        
+        echo "✅ GitHub App manifest is valid"
+
+  check-documentation:
+    name: Check Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check required files
+      run: |
+        echo "Checking for required documentation files..."
+        required_files=(
+          "README.md"
+          "GITHUB-APP-SETUP.md"
+          "CONTRIBUTING.md"
+          "CHANGELOG.md"
+          "LICENSE"
+          ".env.example"
+          "github-app-manifest.json"
+        )
+        
+        for file in "${required_files[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "❌ Missing required file: $file"
+            exit 1
+          else
+            echo "✅ Found: $file"
+          fi
+        done
+        
+    - name: Check README content
+      run: |
+        echo "Checking README.md content..."
+        if ! grep -q "GitHub App" README.md; then
+          echo "❌ README.md should mention GitHub App"
+          exit 1
+        fi
+        if ! grep -q "Gemini" README.md; then
+          echo "❌ README.md should mention Gemini AI"
+          exit 1
+        fi
+        echo "✅ README.md content looks good"

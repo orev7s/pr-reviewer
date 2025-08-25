@@ -1,0 +1,21 @@
+{
+  "name": "Gemini PR Reviewer",
+  "url": "https://github.com/your-username/gemini-pr-reviewer-github-app",
+  "hook_attributes": {
+    "url": "https://your-server.com/webhook"
+  },
+  "redirect_url": "https://your-server.com/auth/callback",
+  "description": "AI-powered GitHub App for automated pull request reviews using Google's Gemini AI. Provides intelligent code analysis, security vulnerability detection, and code quality improvements.",
+  "public": false,
+  "default_events": [
+    "pull_request",
+    "pull_request_review"
+  ],
+  "default_permissions": {
+    "pull_requests": "write",
+    "contents": "read",
+    "metadata": "read",
+    "issues": "read"
+  },
+  "request_oauth_on_install": false
+}
