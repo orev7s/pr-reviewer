@@ -62,8 +62,8 @@
 ### ⚡ Quick Setup
 
 ```bash
-git clone https://github.com/your-username/gemini-pr-reviewer-github-app
-cd gemini-pr-reviewer-github-app
+git clone https://github.com/orev7s/pr-reviewer
+cd pr-reviewer
 npm install
 npm run setup
 ```
@@ -543,8 +543,8 @@ We welcome contributions! Here's how to get started:
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/gemini-pr-reviewer
-cd gemini-pr-reviewer
+git clone https://github.com/orev7s/pr-reviewer
+cd pr-reviewer
 
 # Install dependencies
 npm install
