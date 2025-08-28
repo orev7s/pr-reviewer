@@ -1,4 +1,3 @@
-
 const express = require('express');
 const mysql = require('mysql');
 const fs = require('fs');
@@ -72,6 +71,14 @@ app.get('/file/:filename', (req, res) => {
 });
 
 
+/**
+ * Compute the MD5 hash of a password and return it as a hex string.
+ *
+ * Note: MD5 is cryptographically broken and unsuitable for password storage or authentication in production.
+ *
+ * @param {string} password - Plaintext password to hash.
+ * @returns {string} Hex-encoded MD5 digest of the input.
+ */
 function encryptPassword(password) {
 
   return crypto.createHash('md5').update(password).digest('hex');
